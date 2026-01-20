@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wotclient</title>
+  </head>
+  <body>
+    <div id="app" class="h-100 d-flex flex-column">
+      
+      <div class="d-flex" style="flex: 1 1 auto; min-height: 0;">
+        <div style="width: 66%">
+          <div class="d-flex flex-column" style="width: 100%; height: 100%; border: 1px solid #333; border-bottom: none; border-right: none;">
+          <div id="terminal"></div>
+          </div>
+        </div>
+
+        <div style="width: 34%">
+          <div class="d-flex flex-column" style="width: 100%; height: 50%; border: 1px solid #333; border-bottom: none;">
+            <div class="px-2 py-1 small" style="color: #777; border-bottom: 1px solid #333;">Map</div>
+            <canvas id="map" style="flex: 1 1 auto; min-height: 0;"></canvas>
+          </div>
+
+          <div class="d-flex flex-column" style="width: 100%; height: 50%; border: 1px solid #333; border-bottom: none;">
+            <div class="px-2 py-1 small" style="color: #777; border-bottom: 1px solid #333;">Communications</div>
+            <div id="comms" style="flex: 1 1 auto; min-height: 0;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex">
+        <input id="cmd-input" type="text" autocomplete="off"/>
+        <button id="connect-button" class="small">Connect</button>
+      </div>
+
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
