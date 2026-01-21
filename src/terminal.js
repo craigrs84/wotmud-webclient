@@ -101,16 +101,12 @@ export class Terminal {
             let lastLine = this.container.lastElementChild;
             
             if (!lastLine || i > 0) {
-                if (lastLine) {
-                    //lastLine.style.minHeight = '1.4em';
-                }
                 lastLine = document.createElement('div');
                 this.container.appendChild(lastLine);
             }
 
             if (line.length > 0) {
                 lastLine.appendChild(this._parseAnsi(line));
-                //lastLine.style.minHeight = '1.4em';
             }
         });
 
