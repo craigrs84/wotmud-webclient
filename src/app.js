@@ -71,6 +71,8 @@ export class App {
             this._navigateHistory(-1);
         } else if (e.key === 'ArrowDown') {
             this._navigateHistory(+1);
+        } else if (e.key === 'Tab') {
+            e.preventDefault();
         }
     }
 
@@ -158,39 +160,6 @@ export class App {
                 console.log('Room detected:', entry);
                 this.map.render(entry.areaId, entry.coordinates[2], entry.id);
             }
-
-
-            /*const key = fnv1a64(`${normalize(this.roomName)}|${normalize(this.roomDesc)}`);
-            const entries = this.map.roomMap.get(key);
-            if (entries) {
-                const entry = entries[0];
-                console.log('Room detected:', entry);
-                this.map.render(entry.areaId, entry.coordinates[2], entry.id);
-            }*/
-
-    
-            
-            /*let found = false;
-            for (let area of this.map.mapData.areas) {
-                for (let room of area.rooms) {
-                    if (room.name === this.roomName && room.userData.description.trim() === this.roomDesc.trim()) {
-                        console.log('Room detected:', area, room);
-                        
-                        this.map.render(area.id, room.coordinates[2], room.id);
-                        found = true;
-
-                        break;
-                    }
-
-                    if (found) {
-                        break;
-                    }
-                }
-            }*/
-
-
-            //const roomData = map.areas.flatMap(x => x.rooms).find(r => r.name === this.roomName && r.userData.description.trim() === this.roomDesc.trim());
-
         }
         else if (this.isRoom) {
             this.roomDesc += text + '\n';

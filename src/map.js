@@ -135,7 +135,7 @@ export class MapRenderer {
   /**
    * Core rendering method (Logic from mapRenderer.ts).
    */
-  render(areaId, levelId, selectedRoomId, scale = 10) {
+  render(areaId, levelId, selectedRoomId, scale = 7) {
     if (!this.mapData) return;
 
     this.lastRenderArgs = [areaId, levelId, selectedRoomId, scale];
