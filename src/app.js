@@ -16,7 +16,7 @@ export class App {
         }
 
         // 1. Initialize Components
-        this.terminal = new Terminal('#terminal', 5000);
+        this.terminal = new Terminal('#terminal', 1000);
         this.comms = new Terminal('#comms', 1000);
         this.socket = new MudSocket(wsUrl);
         this.map = new MapRenderer('#map');
