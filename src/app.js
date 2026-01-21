@@ -2,7 +2,8 @@ import './style.css';
 import { Terminal } from './terminal.js';
 import { MudSocket } from './mudSocket.js';
 import { MapRenderer } from './map.js';
-import { normalize, fnv1a64 } from './util.js';
+import { normalize } from './util.js';
+import { MapService } from './services/MapService.js';
 //import map from './map.json' with { type: 'json' };
 
 export class App {
@@ -15,13 +16,15 @@ export class App {
             wsUrl = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host;
         }
 
+        window.mapService = new MapService();
+        window.mapService.load();
+
         // 1. Initialize Components
         this.terminal = new Terminal('#terminal', 1000);
         this.comms = new Terminal('#comms', 1000);
         this.socket = new MudSocket(wsUrl);
         this.map = new MapRenderer('#map');
-        this.map.init();
-
+        
         // 2. Internal State
         this.trailing = false;
         this.history = [];
@@ -141,16 +144,16 @@ export class App {
 
 
             //search by room name
-            let entries = this.map.roomMap[normalize(this.roomName)];
+            let entries = window.mapService.roomMap[normalize(this.roomName)];
             if (entries?.length > 1) {
                 //then search by room description
-                entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
                 if (entries?.length > 1) {
                     //finally search by room exits
-                    entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}|${normalize(this.roomExits)}`];
+                    entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}|${normalize(this.roomExits)}`];
                     if (!entries?.length) {
                         //fallback behavior
-                        entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                        entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
                     }
                 }
             }
