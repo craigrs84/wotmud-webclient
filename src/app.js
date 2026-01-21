@@ -4,6 +4,7 @@ import { MapRenderer } from './map.js';
 import { normalize } from './util.js';
 import { MapService } from './services/MapService.js';
 import { Spinner } from './spinner.js';
+import { Command } from './command.js';
 
 export class App {
     constructor() {
@@ -21,20 +22,17 @@ export class App {
         this.socket = new MudSocket(wsUrl);
         this.map = new MapRenderer('#map');
         this.spinner = new Spinner('#spinner');
+        this.command = new Command('#cmd-input');
         
         // 2. Internal State
         this.trailing = false;
-        this.history = [];
-        this.historyIndex = -1;
 
-        // 3. Cache DOM Elements
-        this.inputEl = document.getElementById('cmd-input');
         this.connectButton = document.getElementById('connect-button');
 
         // 4. Bind and Setup
         this.socket.onMessage((msg) => this.onSocketMessage(msg));
+        this.command.onSubmit((command) => this._submitCommand(command));
         this.connectButton.onclick = () => this.socket.connect();
-        this.inputEl.onkeydown = (e) => this._handleInput(e);
 
         window.mapService = new MapService();
         this.spinner.show();
@@ -68,21 +66,7 @@ export class App {
           }
     }
 
-    _handleInput(e) {
-        if (e.key === 'Enter') {
-            this._submitCommand();
-        } else if (e.key === 'ArrowUp') {
-            this._navigateHistory(-1);
-        } else if (e.key === 'ArrowDown') {
-            this._navigateHistory(+1);
-        } else if (e.key === 'Tab') {
-            e.preventDefault();
-        }
-    }
-
-    _submitCommand() {
-        const cmd = this.inputEl.value.trim();
-        //if (!cmd) return;
+    _submitCommand(cmd) {
 
         // Visual cleanup for trailing text
         if (this.trailing) {
@@ -97,24 +81,8 @@ export class App {
         // Process command (splitting by semicolon)
         const subcmds = cmd.split(';');
         subcmds.forEach(sub => this.socket.send(sub.trim()));
-
-        // Manage History
-        if (this.history[this.history.length - 1] !== cmd) {
-            this.history.push(cmd);
-        }
-
-        if (this.history.length > 50) this.history.shift();
-        
-        this.historyIndex = this.history.length - 1;
-        this.inputEl.select();
     }
 
-    _navigateHistory(direction) {
-        if (direction === 0) return;
-        this.historyIndex = Math.max(-1, Math.min(this.historyIndex + direction, this.history.length));
-        this.inputEl.value = this.history[this.historyIndex] || '';
-        setTimeout(() => this.inputEl.select(), 0);
-    }
 
     _handleTriggers(text) {
         if (text.includes(' says ') ||
