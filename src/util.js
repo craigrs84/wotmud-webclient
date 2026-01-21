@@ -1,5 +1,5 @@
 export function normalize(text) {
-  return text?.replace(/\s+/g, ' ').trim().toLowerCase() ?? '';
+  return text?.replace(/\s+/g, ' ').trim() ?? '';
 }
 
 export function fnv1a64(str) {

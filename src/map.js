@@ -88,7 +88,7 @@ export class MapRenderer {
     await Promise.all(imagePromises);
     this.mapData = data;
 
-    this.roomMap = new Map();
+    /*this.roomMap = new Map();
     for (let room of this.mapData.areas.flatMap(x => x.rooms)) {
       const name = normalize(room.name);
       const desc = normalize(room.userData?.description);
@@ -102,7 +102,34 @@ export class MapRenderer {
       }
 
       entries.push(room);
-    }
+    }*/
+
+    const tier1RoomsMap = this.mapData.areas.flatMap(x => x.rooms).reduce((map, room) => {
+      const name = room.name;
+      const key = normalize(name);
+      (map[key] ??= []).push(room);
+      return map;
+    }, {});
+
+    const tier2RoomsMap = Object.values(tier1RoomsMap).filter(x => x.length > 1).flat().reduce((map, room) => {
+      const name = room.name;
+      const description = room.userData.description;
+      const key = `${normalize(name)}|${normalize(description)}`;
+      (map[key] ??= []).push(room);
+      return map;
+    }, {});
+
+    const directionOrder = ['N', 'E', 'S', 'W', 'U', 'D'];
+    const tier3RoomsMap = Object.values(tier2RoomsMap).filter(x => x.length > 1).flat().reduce((map, room) => {
+      const name = room.name;
+      const description = room.userData.description;
+      const exits = room.exits.map(x => x.name[0].toUpperCase()).sort((a, b) => directionOrder.indexOf(a) - directionOrder.indexOf(b)).join(' ');
+      const key = `${normalize(name)}|${normalize(description)}|${normalize(exits)}`;
+      (map[key] ??= []).push(room);
+      return map;
+    }, {});
+
+    this.roomMap = { ...tier1RoomsMap, ...tier2RoomsMap, ...tier3RoomsMap };
   }
 
   /**

@@ -131,16 +131,42 @@ export class App {
         } else if (this.isRoom && text.includes('obvious exits:')) {
             this.isRoom = false;
 
+            this.roomExits = text.match(/\[ obvious exits: (.*) \]$/)?.[1] || '';
+
             console.log('name', [this.roomName, normalize(this.roomName)]);
             console.log('roomDesc', [this.roomDesc, normalize(this.roomDesc)]);
+            console.log('exits', [this.roomExits, normalize(this.roomExits)]);
 
-            const key = fnv1a64(`${normalize(this.roomName)}|${normalize(this.roomDesc)}`);
+
+            //search by room name
+            let entries = this.map.roomMap[normalize(this.roomName)];
+            if (entries?.length > 1) {
+                //then search by room description
+                entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                if (entries?.length > 1) {
+                    //finally search by room exits
+                    entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}|${normalize(this.roomExits)}`];
+                    if (!entries?.length) {
+                        //fallback behavior
+                        entries = this.map.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                    }
+                }
+            }
+
+            if (entries?.length) {
+                const entry = entries[0];
+                console.log('Room detected:', entry);
+                this.map.render(entry.areaId, entry.coordinates[2], entry.id);
+            }
+
+
+            /*const key = fnv1a64(`${normalize(this.roomName)}|${normalize(this.roomDesc)}`);
             const entries = this.map.roomMap.get(key);
             if (entries) {
                 const entry = entries[0];
                 console.log('Room detected:', entry);
                 this.map.render(entry.areaId, entry.coordinates[2], entry.id);
-            }
+            }*/
 
     
             
