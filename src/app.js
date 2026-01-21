@@ -1,10 +1,9 @@
-import './style.css';
 import { Terminal } from './terminal.js';
 import { MudSocket } from './mudSocket.js';
 import { MapRenderer } from './map.js';
 import { normalize } from './util.js';
 import { MapService } from './services/MapService.js';
-//import map from './map.json' with { type: 'json' };
+import { Spinner } from './spinner.js';
 
 export class App {
     constructor() {
@@ -16,14 +15,12 @@ export class App {
             wsUrl = (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host;
         }
 
-        window.mapService = new MapService();
-        window.mapService.load();
-
         // 1. Initialize Components
         this.terminal = new Terminal('#terminal', 1000);
         this.comms = new Terminal('#comms', 1000);
         this.socket = new MudSocket(wsUrl);
         this.map = new MapRenderer('#map');
+        this.spinner = new Spinner('#spinner');
         
         // 2. Internal State
         this.trailing = false;
@@ -38,6 +35,10 @@ export class App {
         this.socket.onMessage((msg) => this.onSocketMessage(msg));
         this.connectButton.onclick = () => this.socket.connect();
         this.inputEl.onkeydown = (e) => this._handleInput(e);
+
+        window.mapService = new MapService();
+        this.spinner.show();
+        window.mapService.load().then(() => this.spinner.hide());
     }
 
     /**
