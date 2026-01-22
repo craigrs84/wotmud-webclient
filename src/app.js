@@ -23,15 +23,14 @@ export class App {
         this.map = new MapRenderer('#map');
         this.spinner = new Spinner('#spinner');
         this.command = new Command('#cmd-input');
+        this.connectButton = document.getElementById('connect-button');
         
         // 2. Internal State
         this.trailing = false;
 
-        this.connectButton = document.getElementById('connect-button');
-
         // 4. Bind and Setup
-        this.socket.onMessage((msg) => this.onSocketMessage(msg));
-        this.command.onSubmit((command) => this._submitCommand(command));
+        this.socket.onMessage((msg) => this._onSocketMessage(msg));
+        this.command.onSubmit((command) => this._onSubmitCommand(command));
         this.connectButton.onclick = () => this.socket.connect();
 
         window.mapService = new MapService();
@@ -43,30 +42,49 @@ export class App {
      * Handle incoming messages from the socket
      * @param {Object} msg - The message object
      */
-    onSocketMessage(msg) {
+    _onSocketMessage(msg) {
       const type = msg.type || 'raw';
 
-          this._handleTriggers(msg.data);
+        this._handleTriggers(msg.data);
 
-          // Reset trailing if we get a new non-timer message
-          if (this.trailing && !msg.timer) {
-              this.terminal.writeln();
-              this.trailing = false;
-          }
+        const words = msg.data.match(/\b\w{2,}\b/g);
+        if (words) {
+            this.words ??= new Set();
 
-          if (type === 'system') {
-              this.terminal.writeln(msg.data);
-          } else if (type === 'raw') {
-              if (msg.timer) {
-                  this.terminal.write(msg.data);
-                  this.trailing = true;
-              } else {
-                  this.terminal.writeln(msg.data);
-              }
-          }
+            for (const word of words) {
+                // move word to most-recent position
+                this.words.delete(word);
+                this.words.add(word);
+
+                // trim to last 100 distinct words
+                if (this.words.size > 100) {
+                    const oldest = this.words.values().next().value;
+                    this.words.delete(oldest);
+                }
+            }
+            console.log('words', this.words);
+        }
+
+
+        // Reset trailing if we get a new non-timer message
+        if (this.trailing && !msg.timer) {
+            this.terminal.writeln();
+            this.trailing = false;
+        }
+
+        if (type === 'system') {
+            this.terminal.writeln(msg.data);
+        } else if (type === 'raw') {
+            if (msg.timer) {
+                this.terminal.write(msg.data);
+                this.trailing = true;
+            } else {
+                this.terminal.writeln(msg.data);
+            }
+        }
     }
 
-    _submitCommand(cmd) {
+    _onSubmitCommand(cmd) {
 
         // Visual cleanup for trailing text
         if (this.trailing) {
@@ -74,8 +92,6 @@ export class App {
             this.trailing = false;
         }
 
-        // Echo command to local terminal
-        //\x1B\[36m(.+)\x1B\[0m
         this.terminal.writeln(`\x1B\[90m${cmd}\x1B\[0m`);
 
         // Process command (splitting by semicolon)

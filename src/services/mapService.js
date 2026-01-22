@@ -1,7 +1,7 @@
 import { normalize } from '../util.js';
 
 export class MapService {
-
+  
   async load(apiUrl = 'map.json') {
       const response = await fetch(apiUrl);
       const data = await response.json();
@@ -77,3 +77,5 @@ export class MapService {
       this.roomMap = { ...tier1RoomsMap, ...tier2RoomsMap, ...tier3RoomsMap };
     }
 }
+
+export const mapService = new MapService();
