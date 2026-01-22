@@ -1,5 +1,5 @@
 import { Terminal } from './terminal.js';
-import { MudSocket } from './mudSocket.js';
+import { MudSocket } from './services/mudSocket.js';
 import { MapRenderer } from './map.js';
 import { normalize } from './util.js';
 import { MapService } from './services/MapService.js';

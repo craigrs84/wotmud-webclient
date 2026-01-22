@@ -1,6 +1,7 @@
 export const appState = {
   mapData: null,
   roomMap: null,
-  commandHistory: [],
+  commands: [],
+  commandIndex: 0,
   autocompleteWords: [], 
 };
