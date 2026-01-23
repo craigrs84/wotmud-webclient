@@ -47,9 +47,9 @@ export class CommandComponent {
   _navigateHistory(direction) {
     appState.commandIndex = Math.min(Math.max(appState.commandIndex + direction, -1), appState.commands.length);
 
-    const validIndex = appState.commandIndex >= 0 && appState.commandIndex < appState.commands.length;
+    const isValidIndex = appState.commandIndex >= 0 && appState.commandIndex < appState.commands.length;
 
-    this.input.value = validIndex ? appState.commands[appState.commandIndex] : '';
+    this.input.value = isValidIndex ? appState.commands[appState.commandIndex] : '';
 
     this.input.select();
   }
