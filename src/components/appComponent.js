@@ -5,6 +5,7 @@ import { normalize } from '../utils/util.js';
 import { MapService } from '../services/MapService.js';
 import { SpinnerComponent } from './spinnerComponent.js';
 import { CommandComponent } from './commandComponent.js';
+import { appState } from '../appState.js';
 
 export class AppComponent {
     constructor() {
@@ -33,9 +34,14 @@ export class AppComponent {
         this.command.onSubmit((command) => this._onSubmitCommand(command));
         this.connectButton.onclick = () => this.socket.connect();
 
-        window.mapService = new MapService();
+        // Load Map Data
+        this.mapService = new MapService();
         this.spinner.show();
-        window.mapService.load().then(() => this.spinner.hide());
+        this.mapService.load().then((result) => {
+            this.spinner.hide();
+            appState.mapData = result.mapData;
+            appState.roomMap = result.roomMap;
+        });
     }
 
     /**
@@ -129,16 +135,16 @@ export class AppComponent {
 
 
             //search by room name
-            let entries = window.mapService.roomMap[normalize(this.roomName)];
+            let entries = appState.roomMap[normalize(this.roomName)];
             if (entries?.length > 1) {
                 //then search by room description
-                entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                entries = appState.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
                 if (entries?.length > 1) {
                     //finally search by room exits
-                    entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}|${normalize(this.roomExits)}`];
+                    entries = appState.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}|${normalize(this.roomExits)}`];
                     if (!entries?.length) {
                         //fallback behavior
-                        entries = window.mapService.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
+                        entries = appState.roomMap[`${normalize(this.roomName)}|${normalize(this.roomDesc)}`];
                     }
                 }
             }

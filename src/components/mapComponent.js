@@ -1,4 +1,5 @@
 import { mapEnvTypes } from '../mapEnvTypes.js';
+import { appState } from '../appState.js';
 
 /**
  * Encapsulates the rendering logic for the WoTMud map.
@@ -28,7 +29,7 @@ export class MapComponent {
       resizeTimer = setTimeout(() => {
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
-        if (window.mapService.mapData && this.lastRenderArgs) {
+        if (appState.mapData && this.lastRenderArgs) {
           this.render(...this.lastRenderArgs);
         }
       }, 50);
@@ -39,7 +40,7 @@ export class MapComponent {
    * Core rendering method (Logic from mapRenderer.ts).
    */
   render(areaId, levelId, selectedRoomId, scale = 10) {
-    const mapData = window.mapService.mapData;
+    const mapData = appState.mapData;
     if (!mapData) return;
 
     this.lastRenderArgs = [areaId, levelId, selectedRoomId, scale];

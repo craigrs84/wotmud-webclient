@@ -75,6 +75,11 @@ export class MapService {
       }, {});
 
       this.roomMap = { ...tier1RoomsMap, ...tier2RoomsMap, ...tier3RoomsMap };
+
+      return {
+        mapData: this.mapData,
+        roomMap: this.roomMap,
+      };
     }
 }
 
