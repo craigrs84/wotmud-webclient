@@ -1,5 +1,5 @@
-import { mapEnvTypes } from './mapEnvTypes.js';
-import { normalize, fnv1a64 } from './util.js';
+import { mapEnvTypes } from '../mapEnvTypes.js';
+import { normalize, fnv1a64 } from '../util.js';
 
 /**
  * Encapsulates the rendering logic for the WoTMud map.

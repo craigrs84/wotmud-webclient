@@ -1,6 +1,6 @@
-import { appState } from './appState';
+import { appState } from '../appState';
 
-const HISTORY_LIMIT = 50;
+const HISTORY_LIMIT = 100;
 
 export class Command {
   constructor(selector) {

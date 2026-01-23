@@ -64,7 +64,7 @@ export class MudSocket {
      * Internal: handle incoming data
      * @param {MessageEvent} event 
      */
-    _handleMessage(event) {        
+    _handleMessage(event) {
         // Clear existing timeout
         clearTimeout(this.timeout);
         this.timeout = null;
@@ -109,7 +109,7 @@ export class MudSocket {
         // flush remainder after short delay
         if (!this.timeout && this.buffer.length) {
             this.timeout = setTimeout(() => {
-                console.log('flushing after delay', this.buffer);
+                console.log('Flushing after delay', this.buffer);
                 this.timeout = null;
                 const buffer = this.buffer;
                 this.buffer = '';

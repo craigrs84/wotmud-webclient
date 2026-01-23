@@ -1,8 +1,8 @@
 import { Terminal } from './terminal.js';
-import { MudSocket } from './services/mudSocket.js';
+import { MudSocket } from '../services/mudSocket.js';
 import { MapRenderer } from './map.js';
-import { normalize } from './util.js';
-import { MapService } from './services/MapService.js';
+import { normalize } from '../util.js';
+import { MapService } from '../services/MapService.js';
 import { Spinner } from './spinner.js';
 import { Command } from './command.js';
 
