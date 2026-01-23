@@ -1,5 +1,5 @@
 import { ConsoleComponent } from './consoleComponent.js';
-import { MudSocket } from '../services/mudSocket.js';
+import { MudSocketService } from '../services/mudSocketService.js';
 import { MapComponent } from './mapComponent.js';
 import { normalize } from '../util.js';
 import { MapService } from '../services/MapService.js';
@@ -17,9 +17,9 @@ export class AppComponent {
         }
 
         // 1. Initialize Components
-        this.terminal = new ConsoleComponent('#terminal', 1000);
+        this.console = new ConsoleComponent('#terminal', 1000);
         this.comms = new ConsoleComponent('#comms', 1000);
-        this.socket = new MudSocket(wsUrl);
+        this.socket = new MudSocketService(wsUrl);
         this.map = new MapComponent('#map');
         this.spinner = new SpinnerComponent('#spinner');
         this.command = new CommandComponent('#cmd-input');
@@ -68,18 +68,18 @@ export class AppComponent {
 
         // Reset trailing if we get a new non-timer message
         if (this.trailing && !msg.timer) {
-            this.terminal.writeln();
+            this.console.writeln();
             this.trailing = false;
         }
 
         if (type === 'system') {
-            this.terminal.writeln(msg.data);
+            this.console.writeln(msg.data);
         } else if (type === 'raw') {
             if (msg.timer) {
-                this.terminal.write(msg.data);
+                this.console.write(msg.data);
                 this.trailing = true;
             } else {
-                this.terminal.writeln(msg.data);
+                this.console.writeln(msg.data);
             }
         }
     }
@@ -88,11 +88,11 @@ export class AppComponent {
 
         // Visual cleanup for trailing text
         if (this.trailing) {
-            this.terminal.writeln();
+            this.console.writeln();
             this.trailing = false;
         }
 
-        this.terminal.writeln(`\x1B\[90m${cmd}\x1B\[0m`);
+        this.console.writeln(`\x1B\[90m${cmd}\x1B\[0m`);
 
         // Process command (splitting by semicolon)
         const subcmds = cmd.split(';');

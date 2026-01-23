@@ -1,6 +1,6 @@
 // src/mudSocket.js
 
-export class MudSocket {
+export class MudSocketService {
     /**
      * @param {string} url - WebSocket server URL
      */
