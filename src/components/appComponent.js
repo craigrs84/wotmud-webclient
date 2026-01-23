@@ -1,7 +1,7 @@
 import { ConsoleComponent } from './consoleComponent.js';
 import { MudSocketService } from '../services/mudSocketService.js';
 import { MapComponent } from './mapComponent.js';
-import { normalize } from '../util.js';
+import { normalize } from '../utils/util.js';
 import { MapService } from '../services/MapService.js';
 import { SpinnerComponent } from './spinnerComponent.js';
 import { CommandComponent } from './commandComponent.js';

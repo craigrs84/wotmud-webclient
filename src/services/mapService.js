@@ -1,4 +1,4 @@
-import { normalize } from '../util.js';
+import { normalize } from '../utils/util.js';
 
 export class MapService {
   
