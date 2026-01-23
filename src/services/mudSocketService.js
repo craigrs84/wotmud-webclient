@@ -77,7 +77,7 @@ export class MudSocketService {
         //break into parts
         let i = 0;
         const matches = [...this.buffer.matchAll(this.regex)];
-        const results = matches.map(match => {
+        const chunks = matches.map(match => {
             const text = this.buffer.substring(i, match.index);
             const delimiter = match[0];
             const item = {  text, delimiter };
@@ -93,16 +93,16 @@ export class MudSocketService {
             [' ', '-', '=', '+', '*'].includes(this.buffer)) {
             const buffer = this.buffer;
             this.buffer = '';
-            results.push({ text: buffer, delimiter: '' });
+            chunks.push({ text: buffer, delimiter: '' });
         }
 
-        // emit results
-        for (let result of results) {
+        // emit chunks
+        for (let chunk of chunks) {
             this._emit({
-                data: result.text, 
-                delimiter: result.delimiter,
-                prompt: result.text.endsWith('> '),
-                timer: [' ', '-', '=', '+', '*'].includes(result.text)
+                data: chunk.text, 
+                delimiter: chunk.delimiter,
+                prompt: chunk.text.endsWith('> '),
+                timer: [' ', '-', '=', '+', '*'].includes(chunk.text)
             });
         }
 
