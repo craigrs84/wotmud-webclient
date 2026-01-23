@@ -1,8 +1,8 @@
 import { appState } from '../appState';
 
-const HISTORY_LIMIT = 100;
-
 export class CommandComponent {
+  static HISTORY_LIMIT = 100;
+
   constructor(selector) {
     this.input = document.querySelector(selector);
 
@@ -60,7 +60,7 @@ export class CommandComponent {
     if (appState.commands[appState.commands.length - 1] !== command) {
       appState.commands.push(command);
 
-      if (appState.commands.length > HISTORY_LIMIT) {
+      if (appState.commands.length > CommandComponent.HISTORY_LIMIT) {
         appState.commands.shift();
       }
 

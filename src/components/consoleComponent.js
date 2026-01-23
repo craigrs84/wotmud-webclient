@@ -18,7 +18,7 @@ export class ConsoleComponent {
         this.container = document.querySelector(selector);
         this.maxLines = maxLines;
         
-        // Persistent terminal state
+        // Persistent console state
         this.state = {
             fg: null,
             bg: null,
