@@ -2,7 +2,7 @@ import { appState } from '../appState';
 
 const HISTORY_LIMIT = 100;
 
-export class Command {
+export class CommandComponent {
   constructor(selector) {
     this.input = document.querySelector(selector);
 

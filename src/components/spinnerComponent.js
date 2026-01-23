@@ -1,4 +1,4 @@
-export class Spinner {
+export class SpinnerComponent {
     constructor(selector) {
         this.container = document.querySelector(selector);
     }

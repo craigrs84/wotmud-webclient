@@ -1,12 +1,12 @@
-import { Terminal } from './terminal.js';
+import { ConsoleComponent } from './consoleComponent.js';
 import { MudSocket } from '../services/mudSocket.js';
-import { MapRenderer } from './map.js';
+import { MapComponent } from './mapComponent.js';
 import { normalize } from '../util.js';
 import { MapService } from '../services/MapService.js';
-import { Spinner } from './spinner.js';
-import { Command } from './command.js';
+import { SpinnerComponent } from './spinnerComponent.js';
+import { CommandComponent } from './commandComponent.js';
 
-export class App {
+export class AppComponent {
     constructor() {
 
         let wsUrl;
@@ -17,12 +17,12 @@ export class App {
         }
 
         // 1. Initialize Components
-        this.terminal = new Terminal('#terminal', 1000);
-        this.comms = new Terminal('#comms', 1000);
+        this.terminal = new ConsoleComponent('#terminal', 1000);
+        this.comms = new ConsoleComponent('#comms', 1000);
         this.socket = new MudSocket(wsUrl);
-        this.map = new MapRenderer('#map');
-        this.spinner = new Spinner('#spinner');
-        this.command = new Command('#cmd-input');
+        this.map = new MapComponent('#map');
+        this.spinner = new SpinnerComponent('#spinner');
+        this.command = new CommandComponent('#cmd-input');
         this.connectButton = document.getElementById('connect-button');
         
         // 2. Internal State
@@ -106,9 +106,9 @@ export class App {
             text.includes('You tell ') ||
             text.includes('You say ') ||
             text.includes('whispers') ||
-            text.includes('shouts') || 
+            text.includes('shouts') ||
             text.includes('yells') ||
-            text.includes(' chats ') ||          
+            text.includes(' chats ') ||
             text.includes(' narrates ')) {
             this.comms.writeln(text);
         }

@@ -1,11 +1,10 @@
 import { mapEnvTypes } from '../mapEnvTypes.js';
-import { normalize, fnv1a64 } from '../util.js';
 
 /**
  * Encapsulates the rendering logic for the WoTMud map.
  * Derived from mapRenderer.ts and mapApi.ts.
  */
-export class MapRenderer {
+export class MapComponent {
   constructor(canvasSelector) {
     this.canvas = document.querySelector(canvasSelector);
     if (!this.canvas) {

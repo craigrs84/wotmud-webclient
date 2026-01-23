@@ -1,4 +1,4 @@
-export class Terminal {
+export class ConsoleComponent {
     // Static configuration for ANSI codes
     static FG_COLORS = {
         '30': '#000', '31': '#ff5555', '32': '#50fa7b', '33': '#f1fa8c',
@@ -49,10 +49,10 @@ export class Terminal {
                     this.state.bold = true;
                 } else if (code === '4') {
                     this.state.underline = true;
-                } else if (Terminal.FG_COLORS[code]) {
-                    this.state.fg = Terminal.FG_COLORS[code];
-                } else if (Terminal.BG_COLORS[code]) {
-                    this.state.bg = Terminal.BG_COLORS[code];
+                } else if (ConsoleComponent.FG_COLORS[code]) {
+                    this.state.fg = ConsoleComponent.FG_COLORS[code];
+                } else if (ConsoleComponent.BG_COLORS[code]) {
+                    this.state.bg = ConsoleComponent.BG_COLORS[code];
                 } else if (code === '39') {
                     this.state.fg = null;
                 } else if (code === '49') {

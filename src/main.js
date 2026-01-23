@@ -3,6 +3,6 @@
 //import 'bootstrap'
 import './style.css';
 
-import { App } from "./components/app";
+import { AppComponent } from "./components/appComponent";
 
 new App();
