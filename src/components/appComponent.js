@@ -9,7 +9,6 @@ import { appState } from '../appState.js';
 
 export class AppComponent {
     constructor() {
-
         let wsUrl;
         if (window.location.host.startsWith('localhost')) {
             wsUrl = 'ws://localhost:8080'
@@ -33,7 +32,9 @@ export class AppComponent {
         this.socket.onMessage((msg) => this._onSocketMessage(msg));
         this.command.onSubmit((command) => this._onSubmitCommand(command));
         this.connectButton.onclick = () => this.socket.connect();
+    }
 
+    init() {
         // Load Map Data
         this.mapService = new MapService();
         this.spinner.show();

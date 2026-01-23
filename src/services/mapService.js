@@ -3,6 +3,7 @@ import { normalize } from '../utils/util.js';
 export class MapService {
   
   async load(apiUrl = 'map.json') {
+    console.log('loading2');
       const response = await fetch(apiUrl);
       const data = await response.json();
 
@@ -36,17 +37,26 @@ export class MapService {
           label.coordinates[1] *= -1;
           const imageStr = label.image.join('');
           if (imageStr) {
-            label.htmlImage = new Image();
+
+
+            console.log('ok')
+            const p = fetch(`data:image/png;base64,${imageStr}`)
+              .then(r => r.blob())
+              .then(createImageBitmap)
+              .then(bitmap => label.htmlImage = bitmap);
+
+            /*label.htmlImage = new Image();
             const p = new Promise(resolve => {
               label.htmlImage.onload = resolve;
               label.htmlImage.src = 'data:image/png;base64,' + imageStr;
-            });
+            });*/
             imagePromises.push(p);
           }
         });
       });
 
       await Promise.all(imagePromises);
+      console.log('loaded all2');
       this.mapData = data;
 
       const tier1RoomsMap = this.mapData.areas.flatMap(x => x.rooms).reduce((map, room) => {

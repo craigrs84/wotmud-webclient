@@ -5,4 +5,4 @@ import './style.css';
 
 import { AppComponent } from "./components/appComponent";
 
-new AppComponent();
+new AppComponent().init();
